@@ -1,0 +1,8 @@
+# Objetos detectados
+NOTHING = 0
+UNBREAKABLE = 1
+BRICK = 2
+COMMAND_CENTER = 3
+PLAYER = 4
+SHELL = 5
+OTHER = 6
