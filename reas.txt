@@ -15,5 +15,5 @@ Descripción del entorno con REAS
 * Sensores - Los datos del entorno viene del servidor. (visión
     simulada)
 
-Tipo de agente - Reactivo baseado en modelo. Tiene memoria corta y hace 
+Tipo de agente - Reactivo baseado en modelo. Tiene un objetivo que no cambia, su memoria es corta y hace 
     reacciónes de acuerdo con las reglas definidas y el modelo del entorno definido.
