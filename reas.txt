@@ -1,0 +1,19 @@
+Descripción del entorno con REAS
+* Rendimiento - Vencer al base del enemigo en lo menor tiempo que
+    se puede.
+* Entorno
+    - Parcialmente Observable: Hay partes del entorno que nuestro
+        agente no puede ver
+    - Determinista: El estado actual impacta el estado sigiente. 
+    - Secuencial: Decisiones actuales impactan desiciones siguientes.
+    - Estático: El entorno no cambia.
+    - Continuo: Los jugadores pueden ser puestos entre casillas.
+    - Multiagente: El torneo tiene tres agentes.
+    - Competetivo y colaborativo: Nuestro agente tiene que colaborar
+        con su compañero y derrotar a su enemigo.
+* Acciones - Movimentos cardinales, disparar o no, esperar.
+* Sensores - Los datos del entorno viene del servidor. (visión
+    simulada)
+
+Tipo de agente - Reactivo baseado en modelo. Tiene memoria corta y hace 
+    reacciónes de acuerdo con las reglas definidas y el modelo del entorno definido.
