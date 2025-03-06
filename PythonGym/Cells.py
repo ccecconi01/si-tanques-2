@@ -52,7 +52,7 @@ class Shell(Cell):
         super().__init__(x, y)
 
     def __repr__(self):
-        return "#"
+        return "S"
 
 
 class Other(Cell):
@@ -60,7 +60,7 @@ class Other(Cell):
         super().__init__(x, y)
 
     def __repr__(self):
-        return "#"
+        return "O"
 
 
 class Agent(Cell):

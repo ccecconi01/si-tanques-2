@@ -25,14 +25,19 @@ class BaseAgent:
     # Metodo que se llama en cada actualización del agente, y se proporciona le vector de percepciones
     # Devuelve la acción u el disparo si o no
     def Update(self, perception):
+        print(perception)
 
         # actualizar mapped_grid con la informacion nueva
-        self.mapped_grid.update(perception)
+        try:
+            self.mapped_grid.update(perception)
+        except:
+            print("error!")
         print(self.mapped_grid)
 
         print("Toma de decisiones del agente")
-        print(perception)
-        action = random.randint(0, 4)
+        # action = random.randint(0, 4)
+        action = 2
+        time.sleep(0.5)
         return action, False
 
     # Metodo que se llama al finalizar el agente, se pasa el estado de terminacion
