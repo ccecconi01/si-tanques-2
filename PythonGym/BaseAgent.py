@@ -1,16 +1,19 @@
 import random
-import time
 
 from pprint import pprint
 
-from MappedGrid import MappedGrid
+import Indeces
+import Objects
+import Movements
+# from MappedGrid import MappedGrid
 
 
 class BaseAgent:
     def __init__(self, id, name):
         self.id = id
         self.name = name
-        self.mapped_grid = MappedGrid(28, 28)
+        self.can_fire = True
+        # self.mapped_grid = MappedGrid(28, 28)
 
     # Devuelve el nombre del agente
     def Name(self):
@@ -28,14 +31,50 @@ class BaseAgent:
     # Devuelve la acción u el disparo si o no
     def Update(self, perception):
         self.print_perception(perception)
+        self.can_fire = perception[Indeces.CAN_FIRE]
 
         # actualizar mapped_grid con la informacion nueva
-        self.mapped_grid.update(perception)
-        print(self.mapped_grid)
+        # self.mapped_grid.update(perception)
+        # print(self.mapped_grid)
 
         print("Toma de decisiones del agente")
-        action = random.randint(0, 4)
-        return action, False
+        action, fire = self.decide_action(perception)
+        return action, fire
+
+    def decide_action(self, perception):
+        neighborhood = [Indeces.NEIGHBORHOOD_UP, Indeces.NEIGHBORHOOD_DOWN,
+                        Indeces.NEIGHBORHOOD_RIGHT, Indeces.NEIGHBORHOOD_LEFT]
+
+        should_shoot = [Objects.COMMAND_CENTER, Objects.BRICK, Objects.SHELL]
+
+        move_action = {
+            Indeces.NEIGHBORHOOD_UP: Movements.MOVE_UP,
+            Indeces.NEIGHBORHOOD_DOWN: Movements.MOVE_DOWN,
+            Indeces.NEIGHBORHOOD_LEFT: Movements.MOVE_LEFT,
+            Indeces.NEIGHBORHOOD_RIGHT: Movements.MOVE_RIGHT,
+        }
+
+        # Atirar jugador, bala, cc o ladrillos en su direcion si podemos
+        for neighbor in neighborhood:
+            if self.can_fire and perception[neighbor] in should_shoot:
+                return move_action[neighbor], True
+
+        # Coger x,y de cc y agente
+        cc_x = perception[Indeces.COMMAND_CENTER_X]
+        cc_y = perception[Indeces.COMMAND_CENTER_Y]
+        agent_x = perception[Indeces.AGENT_X]
+        agent_y = perception[Indeces.AGENT_Y]
+
+        # Mover hacia cc
+        if cc_x > agent_x:
+            return Movements.MOVE_RIGHT, False
+        if cc_x < agent_x:
+            return Movements.MOVE_LEFT, False
+        if cc_y > agent_y:
+            return Movements.MOVE_UP, False
+        if cc_y < agent_y:
+            return Movements.MOVE_DOWN, False
+        return Movements.NOTHING, False
 
     def print_perception(self, perception):
         labels = ["NEIGHBORHOOD_UP",
