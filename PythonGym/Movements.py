@@ -1,0 +1,6 @@
+# Movimientos
+NOTHING = 0
+MOVE_UP = 1
+MOVE_DOWN = 2
+MOVE_RIGHT = 3
+MOVE_LEFT = 4
