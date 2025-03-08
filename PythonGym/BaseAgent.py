@@ -1,6 +1,8 @@
 import random
 import time
 
+from pprint import pprint
+
 from MappedGrid import MappedGrid
 
 
@@ -25,7 +27,7 @@ class BaseAgent:
     # Metodo que se llama en cada actualización del agente, y se proporciona le vector de percepciones
     # Devuelve la acción u el disparo si o no
     def Update(self, perception):
-        print(perception)
+        self.print_perception(perception)
 
         # actualizar mapped_grid con la informacion nueva
         try:
@@ -40,7 +42,27 @@ class BaseAgent:
         time.sleep(0.5)
         return action, False
 
+    def print_perception(self, perception):
+        labels = ["NEIGHBORHOOD_UP = 0",
+                  "NEIGHBORHOOD_DOWN",
+                  "NEIGHBORHOOD_RIGHT",
+                  "NEIGHBORHOOD_LEFT",
+                  "NEIGHBORHOOD_DIST_UP",
+                  "NEIGHBORHOOD_DIST_DOWN",
+                  "NEIGHBORHOOD_DIST_RIGHT",
+                  "NEIGHBORHOOD_DIST_LEFT",
+                  "PLAYER_X",
+                  "PLAYER_Y",
+                  "COMMAND_CENTER_X",
+                  "COMMAND_CENTER_Y",
+                  "AGENT_X",
+                  "AGENT_Y",
+                  "CAN_FIRE",
+                  "HEALTH",]
+
+        pprint(zip(labels, perception))
     # Metodo que se llama al finalizar el agente, se pasa el estado de terminacion
+
     def End(self, win):
         print("Agente finalizado")
         print("Victoria ", win)
