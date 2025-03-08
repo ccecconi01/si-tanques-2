@@ -4,6 +4,7 @@ import Cells
 
 TANK_SIZE = 0.24625
 
+
 class MappedGrid:
     def __init__(self, total_x, total_y):
         self.total_x = total_x
@@ -16,18 +17,13 @@ class MappedGrid:
 
     def update(self, perception):
         # actualizar el agente
-        # self.grid[self.agent.x][self.agent.y] = Cells.Empty(
-            # self.agent.x, self.agent.y)
-
         agent_x = perception[Indeces.AGENT_X]
         agent_y = perception[Indeces.AGENT_Y]
-        # self.grid[agent_x][agent_y] = self.agent
 
         self.agent.x = agent_x
         self.agent.y = agent_y
         self.agent.can_fire = perception[Indeces.CAN_FIRE]
         self.agent.health = perception[Indeces.HEALTH]
-
 
         # actualizar neighborhood up
         up_obj = perception[Indeces.NEIGHBORHOOD_UP]
@@ -57,11 +53,6 @@ class MappedGrid:
         left_obj_y = self.agent.y
         self.put_obj_on_grid(left_obj, left_obj_x, left_obj_y)
 
-        # actualizar donde esta el player
-        player_x = perception[Indeces.PLAYER_X]
-        player_y = perception[Indeces.PLAYER_Y]
-        # self.grid[player_x][player_y] = Cells.Player(player_x, player_y)
-
         # actualizar donde esta el command center
         center_x = int(perception[Indeces.COMMAND_CENTER_X])
         center_y = int(perception[Indeces.COMMAND_CENTER_Y])
@@ -89,7 +80,7 @@ class MappedGrid:
     def __repr__(self):
         s = ""
         s += "+" + "-"*(2*self.total_y-1) + "+\n"
-        for y in range(self.total_y -1, -1, -1):
+        for y in range(self.total_y - 1, -1, -1):
             s += "|"
             for x in range(len(self.grid[0])):
                 s += str(self.grid[x][y]) + " "
