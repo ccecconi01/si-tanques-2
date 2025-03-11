@@ -1,4 +1,5 @@
 import Indeces
+import Movements
 import Objects
 import Cells
 
@@ -13,6 +14,7 @@ class MappedGrid:
                      for x in range(total_x)]
 
         self.agent = Cells.Agent(2, 26)
+        self.command_center = None
         # self.grid[2][26] = self.agent
 
     def update_up(self, perception):
@@ -81,7 +83,67 @@ class MappedGrid:
         elif object == Objects.BRICK:
             self.grid[x][y] = Cells.Brick(x, y)
         elif object == Objects.COMMAND_CENTER:
-            self.grid[x][y] = Cells.Center(x, y)
+            center = Cells.Center(x, y)
+            self.command_center = center
+            self.grid[x][y] = center
+
+    def get_next_agent_move(self):
+        self.floodfill()
+
+        neighbors = self.neighborhood(round(self.agent.x), round(self.agent.y))
+        empty_neighbors = {k: v for k, v in neighbors.items() if isinstance(
+            v, Cells.Empty) or isinstance(v, Cells.Center)}
+        if not empty_neighbors:
+            print("No empty neighbors :(")
+            return None
+        direction = min(empty_neighbors.keys(), key=lambda k: empty_neighbors[k].cost)
+        if empty_neighbors[direction].cost < 0:
+            print("Agent is blocked :(")
+            return None
+        return direction
+
+
+    def floodfill(self):
+        # A*
+        q = [(self.center.x, self.center.y)]
+        while q:
+            source_x, source_y = q.pop(0)
+            cost = self.grid[source_x][source_y].cost + 1
+            neighbors = list(self.neighborhood(source_x, source_y).values())
+            neighbors.sort(key=lambda n: n.cost)
+            for n in neighbors:
+                # if we should not floodfill, undefined cost
+                if not (isinstance(n, Cells.Empty) or isinstance(n, Cells.Brick)):
+                    continue
+                x, y = n.x, n.y
+                # if a cost is already applied to the neighbor, skip
+                if self.grid[x][y].cost != -1:
+                    continue
+                self.grid[x][y].cost = cost
+                q.append((x, y))
+                
+                
+    
+    def neighborhood(self, x, y):
+        n = {}
+
+        directions = {
+            Movements.MOVE_UP: (0, 1),
+            Movements.MOVE_LEFT: (-1, 0),
+            Movements.MOVE_RIGHT: (1, 0),
+            Movements.MOVE_DOWN: (0, -1),
+        }
+
+        for key, val in directions.items():
+            dx, dy = val
+            if not (0 <= x + dx < self.total_x):
+                continue
+            if not (0 <= y + dy < self.total_y):
+                continue
+
+            n[key] = self.grid[x + dx][y + dy]
+
+        return n
 
     def __repr__(self):
         s = ""

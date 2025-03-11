@@ -34,7 +34,10 @@ class BaseAgent:
         print(self.mapped_grid)
 
         print("Toma de decisiones del agente")
-        action = random.randint(0, 4)
+        # action = random.randint(0, 4)
+        action = self.mapped_grid.get_next_agent_move()
+        if action == None:
+            action = random.randint(0, 4)
         return action, False
 
     def print_perception(self, perception):
