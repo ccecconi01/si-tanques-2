@@ -14,7 +14,7 @@ class MappedGrid:
                      for x in range(total_x)]
 
         self.agent = Cells.Agent(2, 26)
-        self.command_center = None
+        self.center = None
         # self.grid[2][26] = self.agent
 
     def update_up(self, perception):
@@ -70,7 +70,8 @@ class MappedGrid:
         # actualizar donde esta el command center
         center_x = int(perception[Indeces.COMMAND_CENTER_X])
         center_y = int(perception[Indeces.COMMAND_CENTER_Y])
-        self.grid[center_x][center_y] = Cells.Center(center_x, center_y)
+        self.center = Cells.Center(center_x, center_y)
+        self.grid[center_x][center_y] = self.center
 
     def put_obj_on_grid(self, object, x, y):
         print("x: ", x, "y: ", y)
@@ -84,24 +85,24 @@ class MappedGrid:
             self.grid[x][y] = Cells.Brick(x, y)
         elif object == Objects.COMMAND_CENTER:
             center = Cells.Center(x, y)
-            self.command_center = center
+            self.center = center
             self.grid[x][y] = center
 
     def get_next_agent_move(self):
         self.floodfill()
 
         neighbors = self.neighborhood(round(self.agent.x), round(self.agent.y))
-        empty_neighbors = {k: v for k, v in neighbors.items() if isinstance(
-            v, Cells.Empty) or isinstance(v, Cells.Center)}
-        if not empty_neighbors:
+        passable_neighbors = {k: v for k, v in neighbors.items() if v.cost != -1 and isinstance(
+            v, Cells.Empty) or isinstance(v, Cells.Center) or isinstance(v, Cells.Brick)}
+        if not passable_neighbors:
             print("No empty neighbors :(")
             return None
-        direction = min(empty_neighbors.keys(), key=lambda k: empty_neighbors[k].cost)
-        if empty_neighbors[direction].cost < 0:
+        direction = min(passable_neighbors.keys(),
+                        key=lambda k: passable_neighbors[k].cost)
+        if passable_neighbors[direction].cost < 0:
             print("Agent is blocked :(")
             return None
         return direction
-
 
     def floodfill(self):
         # A*
@@ -121,9 +122,7 @@ class MappedGrid:
                     continue
                 self.grid[x][y].cost = cost
                 q.append((x, y))
-                
-                
-    
+
     def neighborhood(self, x, y):
         n = {}
 
