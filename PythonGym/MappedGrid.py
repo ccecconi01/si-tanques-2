@@ -15,6 +15,34 @@ class MappedGrid:
         self.agent = Cells.Agent(2, 26)
         # self.grid[2][26] = self.agent
 
+    def update_up(self, perception):
+        up_obj = perception[Indeces.NEIGHBORHOOD_UP]
+        up_dist = perception[Indeces.NEIGHBORHOOD_DIST_UP]
+        up_obj_x = self.agent.x
+        up_obj_y = self.agent.y + up_dist + (1 - TANK_SIZE)
+        self.put_obj_on_grid(up_obj, up_obj_x, up_obj_y)
+
+    def update_down(self, perception):
+        down_obj = perception[Indeces.NEIGHBORHOOD_DOWN]
+        down_dist = perception[Indeces.NEIGHBORHOOD_DIST_DOWN]
+        down_obj_x = self.agent.x
+        down_obj_y = self.agent.y - down_dist - (1 - TANK_SIZE)
+        self.put_obj_on_grid(down_obj, down_obj_x, down_obj_y)
+
+    def update_right(self, perception):
+        right_obj = perception[Indeces.NEIGHBORHOOD_RIGHT]
+        right_dist = perception[Indeces.NEIGHBORHOOD_DIST_RIGHT]
+        right_obj_x = self.agent.x + right_dist + (1 - TANK_SIZE)
+        right_obj_y = self.agent.y
+        self.put_obj_on_grid(right_obj, right_obj_x, right_obj_y)
+
+    def update_left(self, perception):
+        left_obj = perception[Indeces.NEIGHBORHOOD_LEFT]
+        left_dist = perception[Indeces.NEIGHBORHOOD_DIST_LEFT]
+        left_obj_x = self.agent.x - left_dist - (1 - TANK_SIZE)
+        left_obj_y = self.agent.y
+        self.put_obj_on_grid(left_obj, left_obj_x, left_obj_y)
+
     def update(self, perception):
         # actualizar el agente
         agent_x = perception[Indeces.AGENT_X]
@@ -26,32 +54,16 @@ class MappedGrid:
         self.agent.health = perception[Indeces.HEALTH]
 
         # actualizar neighborhood up
-        up_obj = perception[Indeces.NEIGHBORHOOD_UP]
-        up_dist = perception[Indeces.NEIGHBORHOOD_DIST_UP]
-        up_obj_x = self.agent.x
-        up_obj_y = self.agent.y + up_dist + (1 - TANK_SIZE)
-        self.put_obj_on_grid(up_obj, up_obj_x, up_obj_y)
+        self.update_up(perception)
 
         # actualizar neighborhood down
-        down_obj = perception[Indeces.NEIGHBORHOOD_DOWN]
-        down_dist = perception[Indeces.NEIGHBORHOOD_DIST_DOWN]
-        down_obj_x = self.agent.x
-        down_obj_y = self.agent.y - down_dist - (1 - TANK_SIZE)
-        self.put_obj_on_grid(down_obj, down_obj_x, down_obj_y)
+        self.update_down(perception)
 
         # actualizar neighborhood right
-        right_obj = perception[Indeces.NEIGHBORHOOD_RIGHT]
-        right_dist = perception[Indeces.NEIGHBORHOOD_DIST_RIGHT]
-        right_obj_x = self.agent.x + right_dist + (1 - TANK_SIZE)
-        right_obj_y = self.agent.y
-        self.put_obj_on_grid(right_obj, right_obj_x, right_obj_y)
+        self.update_right(perception)
 
         # actualizar neighborhood left
-        left_obj = perception[Indeces.NEIGHBORHOOD_LEFT]
-        left_dist = perception[Indeces.NEIGHBORHOOD_DIST_LEFT]
-        left_obj_x = self.agent.x - left_dist - (1 - TANK_SIZE)
-        left_obj_y = self.agent.y
-        self.put_obj_on_grid(left_obj, left_obj_x, left_obj_y)
+        self.update_left(perception)
 
         # actualizar donde esta el command center
         center_x = int(perception[Indeces.COMMAND_CENTER_X])
@@ -70,12 +82,6 @@ class MappedGrid:
             self.grid[x][y] = Cells.Brick(x, y)
         elif object == Objects.COMMAND_CENTER:
             self.grid[x][y] = Cells.Center(x, y)
-        # elif object == Objects.PLAYER:
-        #     self.grid[x][y] = Cells.Player(x, y)
-        # elif object == Objects.SHELL:
-            # self.grid[x][y] = Cells.Shell(x, y)
-        # elif object == Objects.OTHER:
-            # self.grid[x][y] = Cells.Other(x, y)
 
     def __repr__(self):
         s = ""
