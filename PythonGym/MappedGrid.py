@@ -105,6 +105,11 @@ class MappedGrid:
         return direction
 
     def floodfill(self):
+        # Clear cost
+        for col in self.grid:
+            for cell in col:
+                cell.cost = -1
+
         # A*
         q = [(self.center.x, self.center.y)]
         while q:
