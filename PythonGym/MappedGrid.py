@@ -92,7 +92,7 @@ class MappedGrid:
         self.floodfill()
 
         neighbors = self.neighborhood(round(self.agent.x), round(self.agent.y))
-        passable_neighbors = {k: v for k, v in neighbors.items() if v.cost != -1 and isinstance(
+        passable_neighbors = {k: v for k, v in neighbors.items() if v.cost >= 0 and isinstance(
             v, Cells.Empty) or isinstance(v, Cells.Center) or isinstance(v, Cells.Brick)}
         if not passable_neighbors:
             print("No empty neighbors :(")
@@ -123,7 +123,7 @@ class MappedGrid:
                     continue
                 x, y = n.x, n.y
                 # if a cost is already applied to the neighbor, skip
-                if self.grid[x][y].cost != -1:
+                if self.grid[x][y].cost >= 0:
                     continue
                 self.grid[x][y].cost = cost
                 q.append((x, y))
