@@ -67,7 +67,7 @@ class BaseAgent:
         same_y_position = self.old_agent_position[1] == current_agent_position[1]
         same_position = same_x_position and same_y_position
         if (same_movement and same_position) or floodfill_movement == None:
-            random_movement = random.choice(neighborhood_move.values())
+            random_movement = random.choice(list(neighborhood_move.values()))
             self.old_movement = random_movement
             self.old_agent_position = current_agent_position
             return random_movement, True
