@@ -49,7 +49,7 @@ class BaseAgent:
             Indeces.NEIGHBORHOOD_RIGHT: Movements.MOVE_RIGHT,
         }
 
-        should_shoot = [Objects.COMMAND_CENTER, Objects.SHELL, Objects.PLAYER]
+        should_shoot = [Objects.PLAYER, Objects.COMMAND_CENTER, Objects.SHELL, Objects.OTHER]
 
         # Atirar centro de comando, bala o jugador en su direcion si lo vemos
         for neighbor, movement in neighborhood_move.items():
