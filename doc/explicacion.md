@@ -1,5 +1,25 @@
 # Explicacion de nuestro programa
 
+## El Metodo `BaseAgent.Update`
+
+El comportamiento del agente sigue estas pasos en orden:
+
+1. Actualiza el `MappedGrid` modelo con la informacion nueva en `perception`.
+2. Si lo ve, atira al jugador, centro comando, una bala o el otro agente y devuelve el movimiento eligido.
+3. Si no, adquire el mejor movimiento desde los datos del `MappedGrid` con uso del algoritmo floodfill.
+4. Si esta atrapado y quiere mover en el mismo direccion que antes, elige un movimiento aleatorio en su panico.
+5. Si no, devuelve el movimiento adquirido por floodfill.
+
+## Dibujos de maqina de estados
+
+### Final
+
+![maqina de estados final](./#)
+
+### Preliminar
+
+![maqina de estados preliminar](./#)
+
 ## Guardado en el objeto `BaseAgent`
 
 Guardamos lo sigiente para empezar en el metodo `BaseAgent.__init__`:
