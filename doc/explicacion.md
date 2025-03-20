@@ -14,11 +14,11 @@ El comportamiento del agente sigue estas pasos en orden:
 
 ### Final
 
-![maqina de estados final](./#)
+![maqina de estados final](/doc/dibujofinal.jpg)
 
 ### Preliminar
 
-![maqina de estados preliminar](./#)
+![maqina de estados preliminar](/doc/dibujo_preliminar.jpg)
 
 ## Guardado en el objeto `BaseAgent`
 
